@@ -42,9 +42,10 @@ class _ProductManagerState extends State<ProductManager> {
             child: Text("Add Product"),
             color: Theme.of(context).primaryColor,
             onPressed: () {
+              _getBarcode();
+              _products.add(_barcodeNuevo);
               setState(()  {
-                _getBarcode();
-                _products.add(_barcodeNuevo);
+                print(_products);
               });
             },
           ),
@@ -60,9 +61,9 @@ class _ProductManagerState extends State<ProductManager> {
 
     String _code = await FlutterBarcodeScanner.scanBarcode("#004297", "Cancel", true, ScanMode.BARCODE);
 
-    setState(() {
+
 
       _barcodeNuevo = _code;
-    });
   }
 }
+
