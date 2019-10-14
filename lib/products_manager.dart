@@ -8,18 +8,22 @@ import './products.dart';
 class ProductManager extends StatefulWidget {
   final String startingProduct;
 
+
   ProductManager({this.startingProduct = "Sweets Tester"});
 
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ProductManagerState();
+    return _ProductManagerState("nada");
   }
 }
 
 class _ProductManagerState extends State<ProductManager> {
   List<String> _products = [];
+   String _barcodeNuevo;
+
+  _ProductManagerState(this._barcodeNuevo);
 
   @override
   void initState() {
@@ -38,10 +42,9 @@ class _ProductManagerState extends State<ProductManager> {
             child: Text("Add Product"),
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              setState(() async  {
-                String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", false, ScanMode.DEFAULT);
-
-                _products.add(barcodeScanRes.toString());
+              setState(()  {
+                _getBarcode();
+                _products.add(_barcodeNuevo);
               });
             },
           ),
@@ -50,5 +53,16 @@ class _ProductManagerState extends State<ProductManager> {
         Producsts(_products)
       ],
     );
+  }
+
+
+  Future _getBarcode() async{
+
+    String _code = await FlutterBarcodeScanner.scanBarcode("#004297", "Cancel", true, ScanMode.BARCODE);
+
+    setState(() {
+
+      _barcodeNuevo = _code;
+    });
   }
 }
